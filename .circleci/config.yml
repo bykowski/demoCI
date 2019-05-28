@@ -14,23 +14,22 @@ jobs: #pipline
     - run: mvn test # testy w java
 
   deploy:
-
     docker:
-    - image: buildpack-deps:trusty #git/curl
+    - image: buildpack-deps:trusty
 
-      steps:
-      - checkout
-      - run:
-      name: Deploy Master to Heroku
-      command: |
-      git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
+    steps:
+    - checkout
+    - run:
+        name: Deploying app to heroku
+        command: |
+          git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
 
 
 workflows:
   version: 2
-  build-delopy: // nazwa wlasna
+  build-deploy:
     jobs:
     - build
     - deploy:
-        required:
+        requires:
         - build
